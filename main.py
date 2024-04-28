@@ -58,7 +58,7 @@ def main():
         if dataState and loop_counter == 0:
             socketServer.socket_respond()
 
-        elif dataState and apiList.messageState() and loop_counter != 0:
+        elif dataState and apiList != None and apiList.messageState() and loop_counter != 0:
             control_dict_demo = algorithm(apiList, vehicleoControl1)
 
             socketServer.socket_send(control_dict_demo)
