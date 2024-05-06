@@ -1,7 +1,7 @@
 from pynput.keyboard import Key, Listener
 
 
-class vehicleoControlAPI:
+class vehicleControlAPI:
     def __init__(self, throttle, brake, steering):
         self.dirStr_ = None
         self.throttle = throttle
@@ -42,6 +42,10 @@ class vehicleoControlAPI:
         else:
             self.steering = steering - yaw
             print("steer: ", self.steering, steering, yaw)
+
+    def __pathVisualizationSet__(self, pathlistx, pathlisty):
+        self.pathlistx = pathlistx
+        self.pathlisty = pathlisty
 
     def __listenerInit__(self, pressState, keyboardModel=False):
         listener = Listener(on_press=pressState)  # 创建监听器
@@ -88,7 +92,7 @@ class vehicleoControlAPI:
         pass
 
 # 该文件暴露给外部
-def json_encoder(vehicleoControlAPI):
+def json_encoder(vehicleControlAPI):
     control_dict = {"code": 4,
                     "UserInfo": None,
                     "SimCarMsg": {
@@ -116,12 +120,12 @@ def json_encoder(vehicleoControlAPI):
                     "messager": ""
                     }
     # throttle, brake, steering, handbrake, isManualGear, gear
-    control_dict["SimCarMsg"]["VehicleControl"]["throttle"] = vehicleoControlAPI.throttle
-    control_dict["SimCarMsg"]["VehicleControl"]["brake"] = vehicleoControlAPI.brake
-    control_dict["SimCarMsg"]["VehicleControl"]["steering"] = vehicleoControlAPI.steering
-    control_dict["SimCarMsg"]["VehicleControl"]["handbrake"] = vehicleoControlAPI.handbrake
-    control_dict["SimCarMsg"]["VehicleControl"]["isManualGear"] = vehicleoControlAPI.isManualGear
-    control_dict["SimCarMsg"]["VehicleControl"]["gear"] = vehicleoControlAPI.gear
-    control_dict["SimCarMsg"]["DashboardMsg"]["x"] = vehicleoControlAPI.pathlistx
-    control_dict["SimCarMsg"]["DashboardMsg"]["y"] = vehicleoControlAPI.pathlisty
+    control_dict["SimCarMsg"]["VehicleControl"]["throttle"] = vehicleControlAPI.throttle
+    control_dict["SimCarMsg"]["VehicleControl"]["brake"] = vehicleControlAPI.brake
+    control_dict["SimCarMsg"]["VehicleControl"]["steering"] = vehicleControlAPI.steering
+    control_dict["SimCarMsg"]["VehicleControl"]["handbrake"] = vehicleControlAPI.handbrake
+    control_dict["SimCarMsg"]["VehicleControl"]["isManualGear"] = vehicleControlAPI.isManualGear
+    control_dict["SimCarMsg"]["VehicleControl"]["gear"] = vehicleControlAPI.gear
+    control_dict["SimCarMsg"]["DashboardMsg"]["x"] = vehicleControlAPI.pathlistx
+    control_dict["SimCarMsg"]["DashboardMsg"]["y"] = vehicleControlAPI.pathlisty
     return control_dict

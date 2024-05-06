@@ -31,7 +31,7 @@ TrafficLightListAPI(self):
 RoadLineListAPI(self):
 	return self.__RoadLineList
 showAllState(self): #输出以上所有状态
-### vehicleoControlAPI类
+### vehicleControlAPI类
 >变量   
 self.throttle # 油门  
 self.brake = brake # 刹车  

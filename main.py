@@ -10,7 +10,7 @@ import config
 
 sceneInfoOutputGap = config.sceneInfoOutputGap
 
-def algorithm(apiList, vehicleoControl1):
+def algorithm(apiList, vehicleControl1):
     control_velocity = 0
     control_steer = 0
     # 自动驾驶模式
@@ -26,23 +26,23 @@ def algorithm(apiList, vehicleoControl1):
     #     else: # 最后一位
     #         control_steer = pos_yaw[-1]
     #         control_brake = pose_v[-1]
-    # vehicleoControl1.__steeringSet__(control_steer, yaw=curPose['oriZ'])
-    # vehicleoControl1.__throttleSet__(control_brake, speed=math.sqrt(
+    # vehicleControl1.__steeringSet__(control_steer, yaw=curPose['oriZ'])
+    # vehicleControl1.__throttleSet__(control_brake, speed=math.sqrt(
     #     math.pow(curPose['posX'], 2) + math.pow(curPose['posY'], 2)))
-    # vehicleoControl1.__brakeSet__(control_brake, speed=math.sqrt(
+    # vehicleControl1.__brakeSet__(control_brake, speed=math.sqrt(
     #     math.pow(curPose['posX'], 2) + math.pow(curPose['posY'], 2)))
 
     # 手操模式
-    vehicleoControl1.__keyboardControl__()
+    vehicleControl1.__keyboardControl__()
 
-    control_dict_demo = json_encoder(vehicleoControl1)
+    control_dict_demo = json_encoder(vehicleControl1)
     control_dict_demo = json.dumps(control_dict_demo)
 
     return control_dict_demo
 
 def main():
     loop_counter = 0
-    vehicleoControl1 = vehicleoControlAPI(0, 0, 0)  # 控制初始化
+    vehicleControl1 = vehicleControlAPI(0, 0, 0)  # 控制初始化
     socketServer = SocketServer()
     socketServer.socket_connect()
 
@@ -53,13 +53,13 @@ def main():
                 if loop_counter % sceneInfoOutputGap == 1:
                     print("\n\nInfo begin:")
                     apiList.showAllState()
-                    print("gear mode: ", vehicleoControl1.gear)
+                    print("gear mode: ", vehicleControl1.gear)
 
         if dataState and loop_counter == 0:
             socketServer.socket_respond()
 
         elif dataState and apiList != None and apiList.messageState() and loop_counter != 0:
-            control_dict_demo = algorithm(apiList, vehicleoControl1)
+            control_dict_demo = algorithm(apiList, vehicleControl1)
 
             socketServer.socket_send(control_dict_demo)
         loop_counter += 1
